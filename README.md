@@ -6,7 +6,7 @@ To get live APIs, please visit https://gps-tracker-or64.onrender.com/docs
 The above url for docs will be slow as render is slow for the free services and first hit can take upto few minutes but after that it will be quite fast.
 
 # Steps
-    Use Python 3.6 or above. This repository has been built and test with Python 3.8.2.
+    Use Python 3.6 or above. This repository has been built and test with Python 3.7.8.
     1. Create virtual environment by:
 
             python -m venev env

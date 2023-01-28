@@ -3,8 +3,6 @@ from typing import Union, Type, List, Optional, Dict
 
 from .cache import CacheManager
 from .models import DeviceGPSInfoTable
-from .datatypes import DeviceGPSValueForCacheTypedDict, DeviceGPSInfoDict
-
 
 class DeviceGPSInfo:
     def __init__(
@@ -25,7 +23,7 @@ class DeviceGPSInfo:
         self.speed = speed
         self.id = id
 
-    def dict(self) -> DeviceGPSInfoDict:
+    def dict(self) -> dict:
         return {
             "device_id": self.device_id,
             "latitude": self.latitude,
@@ -36,7 +34,7 @@ class DeviceGPSInfo:
             "id": self.id
         }
 
-    def _get_cache_value(self) -> DeviceGPSValueForCacheTypedDict:
+    def _get_cache_value(self) -> dict:
         '''Returns dict which can be used as value for saving in cache.'''
         data_dict = self.dict()
         del data_dict["device_id"]
@@ -72,7 +70,7 @@ class DeviceGPSInfo:
             await self.set_to_cache()
 
     @classmethod
-    async def filter(cls: Type["DeviceGPSInfo"], **kwargs) -> List["DeviceGPSInfoDict"]:
+    async def filter(cls: Type["DeviceGPSInfo"], **kwargs) -> List["dict"]:
         return await DeviceGPSInfoTable.filter(**kwargs).values(
             id="id",
             device_id="device_id",
@@ -90,7 +88,7 @@ class DeviceLocationManager:
     @staticmethod
     async def get_start_and_end_location(
         device_id: int,
-    ) -> List[Union[DeviceGPSInfoDict, None]]:
+    ) -> List[Union[dict, None]]:
 
         start_location = await DeviceGPSInfoTable.filter(
             device_id=device_id
@@ -123,15 +121,15 @@ class DeviceLocationManager:
         return ans
 
     @staticmethod
-    async def get_from_cache(device_id: int) -> DeviceGPSValueForCacheTypedDict:
+    async def get_from_cache(device_id: int) -> dict:
         return await CacheManager().get(key=device_id)
 
     @staticmethod
-    async def set_to_cache(device_id: int, value: DeviceGPSValueForCacheTypedDict):
+    async def set_to_cache(device_id: int, value: dict):
         return await CacheManager().set(key=device_id, value=value)
 
     @staticmethod
-    async def save_location(location_data: DeviceGPSInfoDict):
+    async def save_location(location_data: dict):
         return await DeviceGPSInfo.save(DeviceGPSInfo(**location_data))
 
     @staticmethod
@@ -139,10 +137,10 @@ class DeviceLocationManager:
         start_time: datetime.datetime,
         end_time: datetime.datetime,
         device_id: int
-    ) -> List[DeviceGPSInfoDict]:
+    ) -> List[dict]:
         return await DeviceGPSInfo.filter(
             device_id=device_id, timestamp__gte=start_time, timestamp__lte=end_time)
 
     @staticmethod
-    async def get_all_data_from_cache()->Dict[int, DeviceGPSValueForCacheTypedDict]:
+    async def get_all_data_from_cache()->Dict[int, dict]:
         return await CacheManager().get_all()

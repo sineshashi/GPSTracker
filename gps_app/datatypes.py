@@ -1,18 +1,6 @@
-from typing import TypedDict, Union, List
+from typing import List
 import datetime
 from pydantic import BaseModel, Extra
-
-class DeviceGPSValueForCacheTypedDict(TypedDict):
-    latitude: float
-    longitude: float
-    timestamp: datetime.datetime
-    sts: datetime.datetime
-    speed: float
-
-
-class DeviceGPSInfoDict(DeviceGPSValueForCacheTypedDict):
-    id: Union[int, None]
-    device_id: int
 
 class LatestDataReturnType(BaseModel):
     latitude: float
