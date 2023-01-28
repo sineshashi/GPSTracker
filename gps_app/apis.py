@@ -13,7 +13,6 @@ async def get_latest_position(deviceID: int):
     res = await DeviceLocationManager.get_from_cache(device_id=deviceID)
     if res is None:
         raise HTTPException(status_code=404, detail="DeviceID does not exist,")
-    print(res)
     return res
 
 @router.get("/getStartAndEndLocationOfDevice", response_model=StartAndEndReturnType)
