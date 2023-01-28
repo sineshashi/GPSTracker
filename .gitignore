@@ -127,4 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
- /env
+/env
+/pyproject.toml
+/prod_migrations
+/migrations
