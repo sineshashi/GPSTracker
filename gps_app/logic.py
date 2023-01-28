@@ -52,14 +52,6 @@ class DeviceGPSInfo:
         if existing_instance is None or (existing_instance.timestamp < self.timestamp):
             await CacheManager().set(key=self.device_id, value=self._get_cache_value())
 
-    async def _save(self) -> "DeviceGPSInfo":
-        '''Saves to db but atomicity is not gauranteed.'''
-        gps_dict = self.dict()
-        del gps_dict["id"]
-        orm_instance = await DeviceGPSInfoTable.create(**gps_dict)
-        self.id = orm_instance.id
-        return self
-
     async def save(self, cache=True) -> None:
         '''Saves instance to db. If cache==True, saves in cache too along with db.'''
         gps_dict = self.dict()
